@@ -1,0 +1,111 @@
+---
+title: "Summary Gen4R"
+execute:
+  echo: false
+author: Anthony Pompetti
+date: "26-Feb-2024"
+date-format: long
+format: 
+  revealjs:
+    theme: simple
+    embed-resources: true
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(VariantAnnotation)
+library(vcfR)
+setwd("/home/anthony/data/12Feb2024_Concordance_Analysis")
+library(here)
+library(ggplot2)
+library(ggridges)
+library(gt)
+```
+
+```{r load_vcf, include = FALSE}
+vcf <- readRDS(here("results/01/vcfR.rds"))
+vcf <- vcf[samples = c("HM24385", "HM26105", "HM27730")]
+```
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+- HM24385: LCL
+- HM26105: iPSC from LCL
+- HM27730: iPSC from PBMC
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+### Compare genotype quality {style="font-size: 16px;"}
+```{r load_gq, include = FALSE}
+gq <- extract.gt(vcf, element = "GQ")
+```
+
+```{r plot_gq}
+data <- gq %>% 
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = -chr_range, names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    mutate(value_bin = cut(value, breaks = c(0,10,20,30,40,50,60,70), include.lowest = TRUE))
+
+p <- ggplot(
+  data,
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1)
+
+p
+```
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+### Compare genotype quality table format {style="font-size: 16px;"}
+```{r gq_tbl}
+tbl <- data %>%
+  group_by(sample, value_bin) %>%
+  dplyr::count() %>%
+  ungroup() %>%
+  pivot_wider(names_from = "sample", values_from = "n")
+
+tbl %>%
+  gt::gt(rowname_col = "value_bin") %>%
+  gt::opt_interactive()
+```
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+### Compare depth {style="font-size: 16px;"}
+```{r load_dp, include = FALSE}
+dp <- extract.gt(vcf, element = "DP")
+```
+
+```{r plot_dp}
+data <- dp %>% 
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = -chr_range, names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    mutate(value_bin = cut(value, breaks = c(0,100,200,300,400,500,600),include.lowest = TRUE))
+
+p <- ggplot(
+  data,
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1)
+
+p
+```
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+### Compare depth table format {style="font-size: 16px;"}
+```{r dp_tbl}
+tbl <- data %>%
+  group_by(sample, value_bin) %>%
+  dplyr::count() %>%
+  ungroup() %>%
+  pivot_wider(names_from = "sample", values_from = "n")
+
+tbl %>%
+  gt::gt(rowname_col = "value_bin") %>%
+  gt::opt_interactive()  
+```
