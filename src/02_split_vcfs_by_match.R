@@ -5,6 +5,7 @@ library(here)
 i_am(".here")
 library(foreach)
 library(Hmisc)
+library(data.table)
 
 # Get the merged files for input
 vcf_files <- list.files(here("results/01/merged_vcfs"), pattern = "\\.merged\\.gz", full.names = TRUE)
@@ -15,6 +16,7 @@ names(vcf_files) <- str_extract(string = vcf_files, pattern = (".*/(.*)\\.GRCh38
 foreach(sample = names(vcf_files)) %do% 
     {
         sprintf("reading in file for %s...", sample) %>% message()
+        stats <- list("n_matching" = list())
         dir.create(here("results/02", sample))
         file =  vcf_files[[sample]]
         vcf <- read.vcfR(file = file)
@@ -30,19 +32,31 @@ foreach(sample = names(vcf_files)) %do%
             idx <- (rowSums((is.na(gt))) == 0) & (gt[,1] == gt[,2])
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_all.gz")))
+
+            stats[["n_matching"]][["two_present_two"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
             # Get observations where variant is present in all samples and does not match
             idx <- (rowSums((is.na(gt))) == 0) & (gt[,1] != gt[,2])
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_none.gz")))
+            stats[["n_matching"]][["two_present_zero"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
             # Get observations where variant is present in only 1 sample
             idx <- (rowSums((is.na(gt))) == 1)
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
+            stats[["n_matching"]][["one_present"]] <- nrow(sub_vcf)
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
+
+            # Save Summary Stats
+            message("savings stats for: ", sample,"...\n")
+            saveRDS(stats, here("results/02",sample,paste0(sample,"_stats.rds")))
+            # Save Summary Stats to Tsv
+            stats_df <- data.frame(unlist(stats$n_matching))
+            colnames(stats_df) <- "n_matching"
+            data.table::fwrite(stats_df, file = here("results/02",sample,paste0(sample,"_stats.csv")), bom = TRUE, row.names = TRUE)
         }
 
         # DO THIS IF THE VCF HAS 3 SAMPLES
@@ -52,7 +66,8 @@ foreach(sample = names(vcf_files)) %do%
             idx <- (rowSums((is.na(gt))) == 0) & (gt[,1] == gt[,2]) & (gt[,1] ==  gt[,3])
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_all.gz")))
+            stats[["n_matching"]][["three_present_three"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_three.gz")))
 
             # Get observations where variant is present in all samples and two match
             ## First get rows where all present and any match
@@ -68,6 +83,7 @@ foreach(sample = names(vcf_files)) %do%
             ## Subset again
             sub_vcf <- sub_vcf[idx,]
             sub_gt <- sub_gt[idx,]
+            stats[["n_matching"]][["three_present_two"]] <- nrow(sub_vcf)
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_two.gz")))
 
             # Get observations where variant is present in two samples and match
@@ -75,20 +91,33 @@ foreach(sample = names(vcf_files)) %do%
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_all.gz")))
+            stats[["n_matching"]][["two_present_two"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
             # Get observations where variant is present in two samples and don't match
             idx <- (rowSums((is.na(gt))) == 1) & ((gt[,1] != gt[,2]) | (gt[,1] !=  gt[,3]) | (gt[,2] !=  gt[,3]))
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_none.gz")))
+            stats[["n_matching"]][["two_present_zero"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
             # Get observations where variant is present in one sample
             idx <- (rowSums((is.na(gt))) == 2)
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
+            stats[["n_matching"]][["one_present"]] <- nrow(sub_vcf)
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
+
+
+            # Save Summary Stats
+            message("savings stats for: ", sample,"...\n")
+            saveRDS(stats, here("results/02",sample,paste0(sample,"_stats.rds")))
+
+            # Save Summary Stats to Tsv
+            stats_df <- data.frame(unlist(stats$n_matching))
+            colnames(stats_df) <- "n_matching"
+            data.table::fwrite(stats_df, file = here("results/02",sample,paste0(sample,"_stats.csv")), bom = TRUE, row.names = TRUE)
         }
     }
