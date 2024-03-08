@@ -6,6 +6,7 @@ i_am(".here")
 library(foreach)
 library(Hmisc)
 library(data.table)
+source(here("scripts/functions/functions.R"))
 
 # Get the merged files for input
 vcf_files <- list.files(here("results/01/merged_vcfs"), pattern = "\\.merged\\.gz", full.names = TRUE)
@@ -20,9 +21,15 @@ foreach(sample = names(vcf_files)) %do%
         dir.create(here("results/02", sample))
         file =  vcf_files[[sample]]
         vcf <- read.vcfR(file = file)
+        stats[["n_matching"]][["total"]] <- nrow(vcf)
 
         message("extracting GT...")
-        gt <- extract.gt(vcf, element = "GT")
+        gt <- extract.gt(vcf, element = "GT") %>% data.frame()
+
+        message("reordering GT...")
+        # String split gt for each column and order by number. 
+        # Reason: 1/4 and 4/1 GT are the same but will not be considered the same.
+        gt <- gt %>% mutate_if(is.character, reorder_gt)
 
         sprintf("evaluating samples for %s...", sample) %>% message()
         # DO THIS IF THE VCF HAS 2 SAMPLES
