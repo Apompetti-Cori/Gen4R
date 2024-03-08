@@ -7,6 +7,7 @@ library(foreach)
 library(Hmisc)
 library(data.table)
 source(here("scripts/functions/functions.R"))
+dir.create(here("results/02"))
 
 # Get the merged files for input
 vcf_files <- list.files(here("results/01/merged_vcfs"), pattern = "\\.merged\\.gz", full.names = TRUE)
@@ -24,7 +25,7 @@ foreach(sample = names(vcf_files)) %do%
         stats[["n_matching"]][["total"]] <- nrow(vcf)
 
         message("extracting GT...")
-        gt <- extract.gt(vcf, element = "GT") %>% data.frame()
+        gt <- extract.gt(vcf, element = "GT") %>% as.data.table()
 
         message("reordering GT...")
         # String split gt for each column and order by number. 
@@ -92,6 +93,15 @@ foreach(sample = names(vcf_files)) %do%
             sub_gt <- sub_gt[idx,]
             stats[["n_matching"]][["three_present_two"]] <- nrow(sub_vcf)
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_two.gz")))
+
+            # Get observations where variant is present in all samples and none match
+            idx <- (rowSums((is.na(gt))) == 0) & ((gt[,1] != gt[,2]) & (gt[,1] !=  gt[,3]) & (gt[,2] !=  gt[,3]))
+            idx <- which(idx)
+            ## Subset vcf and gt
+            sub_vcf <- vcf[idx,]
+            sub_gt <- gt[idx,]
+            stats[["n_matching"]][["three_present_none"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_none.gz")))
 
             # Get observations where variant is present in two samples and match
             idx <- (rowSums((is.na(gt))) == 1) & ((gt[,1] == gt[,2]) | (gt[,1] ==  gt[,3]) | (gt[,2] ==  gt[,3]))
