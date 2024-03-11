@@ -1,4 +1,6 @@
+setwd("/home/anthony/data/12Feb2024_Concordance_Analysis")
 library(here)
+i_am(".here")
 library(tidyverse)
 library(data.table)
 fib <- readRDS(here("results/02/Fibroblast/Fibroblast_stats.rds"))[["n_matching"]] %>% unlist() %>% data.frame() %>% rownames_to_column("rn")

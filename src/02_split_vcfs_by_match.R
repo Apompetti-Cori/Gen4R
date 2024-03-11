@@ -100,8 +100,8 @@ foreach(sample = names(vcf_files)) %do%
             ## Subset vcf and gt
             sub_vcf <- vcf[idx,]
             sub_gt <- gt[idx,]
-            stats[["n_matching"]][["three_present_none"]] <- nrow(sub_vcf)
-            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_none.gz")))
+            stats[["n_matching"]][["three_present_zero"]] <- nrow(sub_vcf)
+            write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_zero.gz")))
 
             # Get observations where variant is present in two samples and match
             idx <- (rowSums((is.na(gt))) == 1) & ((gt[,1] == gt[,2]) | (gt[,1] ==  gt[,3]) | (gt[,2] ==  gt[,3]))
