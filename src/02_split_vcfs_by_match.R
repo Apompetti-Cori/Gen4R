@@ -61,14 +61,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["two_present_two"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["two_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
@@ -82,14 +82,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["two_present_zero"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["two_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
@@ -103,14 +103,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["one_present"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["one_present"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
 
@@ -132,14 +132,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["three_present_three"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["three_present_three"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_three.gz")))
 
@@ -163,14 +163,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["three_present_two"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["three_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_two.gz")))
 
@@ -186,14 +186,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["three_present_zero"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["three_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_zero.gz")))
 
@@ -208,14 +208,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["two_present_two"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["two_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
@@ -230,14 +230,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["two_present_zero"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["two_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
@@ -252,14 +252,14 @@ foreach(sample = names(vcf_files)) %do%
             dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["dp_stats"]][["one_present"]] <- dp
             gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
                 data.frame() %>%
                 mutate(
-                    min = rowMins(as.matrix(.)),
-                    max = rowMaxs(as.matrix(.)))
+                    min = rowMins(as.matrix(.), na.rm = TRUE),
+                    max = rowMaxs(as.matrix(.), na.rm = TRUE))
             stats[["gq_stats"]][["one_present"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
 
