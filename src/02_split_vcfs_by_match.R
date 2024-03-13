@@ -4,6 +4,7 @@ setwd("/home/anthony/data/12Feb2024_Concordance_Analysis")
 library(here)
 i_am(".here")
 library(foreach)
+library(matrixStats)
 library(Hmisc)
 library(data.table)
 source(here("scripts/functions/functions.R"))
@@ -18,19 +19,32 @@ names(vcf_files) <- str_extract(string = vcf_files, pattern = (".*/(.*)\\.GRCh38
 foreach(sample = names(vcf_files)) %do% 
     {
         sprintf("reading in file for %s...", sample) %>% message()
-        stats <- list("n_matching" = list())
+        stats <- list()
         dir.create(here("results/02", sample))
         file =  vcf_files[[sample]]
         vcf <- read.vcfR(file = file)
         stats[["n_matching"]][["total"]] <- nrow(vcf)
 
         message("extracting GT...")
-        gt <- extract.gt(vcf, element = "GT") %>% as.data.table()
+        gt <- extract.gt(vcf, element = "GT")
 
         message("reordering GT...")
         # String split gt for each column and order by number. 
         # Reason: 1/4 and 4/1 GT are the same but will not be considered the same.
-        gt <- gt %>% mutate_if(is.character, reorder_gt)
+        key <- unique(na.omit(c(gt)))
+        value <- unique(na.omit(c(gt)))
+        value <- lapply(value, function(x){
+            res <- as.numeric(strsplit(x, split = "/", fixed = TRUE)[[1]])
+            res <- sort(res)
+            res <- paste(res, collapse = "/")
+        }) %>% unlist()
+        names(value) <- key
+
+        foreach(key = names(value), .final = message("done")) %do% {
+            idx <- which(gt == key)
+            gt[idx] <- value[[key]]
+            return(NULL)
+        }
 
         sprintf("evaluating samples for %s...", sample) %>% message()
         # DO THIS IF THE VCF HAS 2 SAMPLES
@@ -41,30 +55,68 @@ foreach(sample = names(vcf_files)) %do%
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
 
+            message("calculating variant count two present two...")
             stats[["n_matching"]][["two_present_two"]] <- nrow(sub_vcf)
+            message("calculating variant stats two present two...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["two_present_two"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["two_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
             # Get observations where variant is present in all samples and does not match
             idx <- (rowSums((is.na(gt))) == 0) & (gt[,1] != gt[,2])
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
+            message("calculating variant count two present zero...")
             stats[["n_matching"]][["two_present_zero"]] <- nrow(sub_vcf)
+            message("calculating variant stats two present zero...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["two_present_zero"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["two_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
             # Get observations where variant is present in only 1 sample
             idx <- (rowSums((is.na(gt))) == 1)
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
+            message("calculating variant count one present...")
             stats[["n_matching"]][["one_present"]] <- nrow(sub_vcf)
+            message("calculating variant stats one present...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["one_present"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["one_present"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
 
             # Save Summary Stats
             message("savings stats for: ", sample,"...\n")
             saveRDS(stats, here("results/02",sample,paste0(sample,"_stats.rds")))
-            # Save Summary Stats to Tsv
-            stats_df <- data.frame(unlist(stats$n_matching))
-            colnames(stats_df) <- "n_matching"
-            data.table::fwrite(stats_df, file = here("results/02",sample,paste0(sample,"_stats.csv")), bom = TRUE, row.names = TRUE)
         }
 
         # DO THIS IF THE VCF HAS 3 SAMPLES
@@ -74,7 +126,21 @@ foreach(sample = names(vcf_files)) %do%
             idx <- (rowSums((is.na(gt))) == 0) & (gt[,1] == gt[,2]) & (gt[,1] ==  gt[,3])
             idx <- which(idx)
             sub_vcf <- vcf[idx,]
+            message("calculating variant count thee present three...")
             stats[["n_matching"]][["three_present_three"]] <- nrow(sub_vcf)
+            message("calculating variant stats three present three...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["three_present_three"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["three_present_three"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_three.gz")))
 
             # Get observations where variant is present in all samples and two match
@@ -91,7 +157,21 @@ foreach(sample = names(vcf_files)) %do%
             ## Subset again
             sub_vcf <- sub_vcf[idx,]
             sub_gt <- sub_gt[idx,]
+            message("calculating variant count thee present two...")
             stats[["n_matching"]][["three_present_two"]] <- nrow(sub_vcf)
+            message("calculating variant stats three present two...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["three_present_two"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["three_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_two.gz")))
 
             # Get observations where variant is present in all samples and none match
@@ -100,7 +180,21 @@ foreach(sample = names(vcf_files)) %do%
             ## Subset vcf and gt
             sub_vcf <- vcf[idx,]
             sub_gt <- gt[idx,]
+            message("calculating variant count thee present zero...")
             stats[["n_matching"]][["three_present_zero"]] <- nrow(sub_vcf)
+            message("calculating variant stats three present zero...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["three_present_zero"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["three_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.three_present_zero.gz")))
 
             # Get observations where variant is present in two samples and match
@@ -108,7 +202,21 @@ foreach(sample = names(vcf_files)) %do%
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
+            message("calculating variant count two present two...")
             stats[["n_matching"]][["two_present_two"]] <- nrow(sub_vcf)
+            message("calculating variant stats two present two...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["two_present_two"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["two_present_two"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_two.gz")))
 
             # Get observations where variant is present in two samples and don't match
@@ -116,7 +224,21 @@ foreach(sample = names(vcf_files)) %do%
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
+            message("calculating variant count two present zero...")
             stats[["n_matching"]][["two_present_zero"]] <- nrow(sub_vcf)
+            message("calculating variant stats two present zero...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["two_present_zero"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["two_present_zero"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.two_present_zero.gz")))
 
             # Get observations where variant is present in one sample
@@ -124,17 +246,26 @@ foreach(sample = names(vcf_files)) %do%
             idx <- which(idx)
 
             sub_vcf <- vcf[idx,]
+            message("calculating variant count one present...")
             stats[["n_matching"]][["one_present"]] <- nrow(sub_vcf)
+            message("calculating variant stats one present...")
+            dp <- extract.gt(sub_vcf, element = "DP", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["dp_stats"]][["one_present"]] <- dp
+            gq <- extract.gt(sub_vcf, element = "GQ", as.numeric = TRUE) %>% 
+                data.frame() %>%
+                mutate(
+                    min = rowMins(as.matrix(.)),
+                    max = rowMaxs(as.matrix(.)))
+            stats[["gq_stats"]][["one_present"]] <- gq
             write.vcf(sub_vcf, file = here("results/02",sample,paste0(sample,".vcf.one_present.gz")))
 
 
             # Save Summary Stats
             message("savings stats for: ", sample,"...\n")
             saveRDS(stats, here("results/02",sample,paste0(sample,"_stats.rds")))
-
-            # Save Summary Stats to Tsv
-            stats_df <- data.frame(unlist(stats$n_matching))
-            colnames(stats_df) <- "n_matching"
-            data.table::fwrite(stats_df, file = here("results/02",sample,paste0(sample,"_stats.csv")), bom = TRUE, row.names = TRUE)
         }
     }
