@@ -1,14 +1,21 @@
 library(tidyverse)
-setwd("/home/anthony/data/12Feb2024_Concordance_Analysis")
 library(here)
 library(foreach)
 library(doParallel)
-library(GenomicAlignments)
-library(trackplot)
 library(rtracklayer)
-dir.create(here("results/05"))
-dir.create(here("results/05/bigwig_files"))
+library(GenomicAlignments)
+dir.create(here("results/05"), showWarnings=FALSE)
+dir.create(here("results/05/bigwig_files"), showWarnings=FALSE)
+dir.create(here("results/05/depth_files"), showWarnings=FALSE)
 registerDoParallel(cores=4)
+
+df <- data.frame(
+  chr = "chr22",
+  start = seq(from = 42126400, to = 42130800, by = 100),
+  end = seq(from = 42126400, to = 42130800, by = 100) + 99 
+)
+
+data.table::fwrite(df, here("results/05/cyp2d6.bed"), sep = "\t", col.names = FALSE)
 
 bam_dirs <- list.dirs(here("data/samples")) %>% 
     grep("samples/HM[0-9]+(_2)?/whatshap$", value = TRUE, x = .)
@@ -30,6 +37,27 @@ foreach(subject = names(samples)) %do% {
     samples[[subject]]$files <- grep(pattern, bam_files, value = TRUE)
 }
 
+# Calculate coverage for sliding window using samtools depth
+foreach(
+  subject = names(samples)
+) %dopar% {
+  message("processing ", subject, "...")
+  foreach(
+    file = samples[[subject]]$files,
+    i = seq_along(samples[[subject]]$files)
+  ) %do% {
+    bam_file <- file
+    bed_file <- here("results/05/cyp2d6.bed")
+    sample <- samples[[subject]]$sample_ids[i]
+    output <- here("results/05/depth_files",paste0(sample,".depth"))
+    message("reading ", sample, " alignments...")
+    sprintf(
+      "samtools depth -b %s -o %s %s",
+      bed_file, output, bam_file
+    ) %>% system()
+  }
+}
+
 # Convert bam files to big wigs
 foreach(
   subject = names(samples)
@@ -42,7 +70,9 @@ foreach(
     bam_file <- file
     sample <- samples[[subject]]$sample_ids[i]
     message("reading ", sample, " alignments...")
-    alignment <- readGAlignments(bam_file)
+    region <- GRanges("chr22:42126499-42130791")
+    param <- ScanBamParam(which = region, mapqFilter = 20)
+    alignment <- readGAlignments(bam_file, param = param)
     reads_coverage <- coverage(alignment)
     message("exporting coverage...")
     export.bw(

@@ -55,7 +55,7 @@ message("merging vcfs...")
 foreach(sample = names(samples)) %do%
     {
         pattern = paste(samples[[sample]], collapse = "|")
-        files = list.files(here("results/04/filtered_vcf"), pattern = pattern, full.names = TRUE) %>% grep(., pattern = "\\.gz$", value = TRUE)
+        files = list.files(here("results/04/filtered_vcf"), recursive = TRUE, pattern = pattern, full.names = TRUE) %>% grep(., pattern = "\\.gz$", value = TRUE)
         input <- paste(files, collapse = " ")
         sprintf(
             "bcftools merge -O z %s > %s",
