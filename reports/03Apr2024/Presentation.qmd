@@ -52,6 +52,8 @@ library(ggridges)
   - HM23248_2: 
   - HM23338: iPSC from Fibroblast
 
+## SNV Stats
+
 ## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
 
 - HM24385: LCL
@@ -62,7 +64,7 @@ library(ggridges)
 stats <- readRDS(here("results/08/HG002/HG002_stats.rds"))
 ```
 
-## Depth stats {.center}
+### Depth stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$dp_stats, .id = "id") %>%
@@ -72,7 +74,7 @@ data <- bind_rows(stats$dp_stats, .id = "id") %>%
     data.frame()
 ```
 
-## Depth quantiles (per match status) {style="font-size: 16px;"}
+### Depth quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -96,7 +98,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -121,7 +123,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth Boxplots {style="font-size: 16px;"}
+### Depth Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -194,7 +196,7 @@ suppressWarnings({
 })
 ```
 
-## Depth Histograms (per match status) {style="font-size: 16px;"}
+### Depth Histograms (per match status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -211,7 +213,7 @@ coriell::theme_coriell()
 p
 ```
 
-## Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -229,7 +231,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ stats {.center}
+### GQ stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$gq_stats, .id = "id") %>%
@@ -239,7 +241,7 @@ data <- bind_rows(stats$gq_stats, .id = "id") %>%
     data.frame()
 ```
 
-## GQ quantiles (per match status) {style="font-size: 16px;"}
+### GQ quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -263,7 +265,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ quantiles (per match/sample status) {style="font-size: 16px;"}
+### GQ quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -288,7 +290,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ Boxplots {style="font-size: 16px;"}
+### GQ Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -361,7 +363,7 @@ suppressWarnings({
 })
 ```
 
-## GQ Histograms (per match status)
+### GQ Histograms (per match status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -377,7 +379,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ Histograms (per match/sample status)
+### GQ Histograms (per match/sample status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -403,7 +405,7 @@ p
 stats <- readRDS(here("results/08/HG004/HG004_stats.rds"))
 ```
 
-## Depth stats {.center}
+### Depth stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$dp_stats, .id = "id") %>%
@@ -413,7 +415,7 @@ data <- bind_rows(stats$dp_stats, .id = "id") %>%
     data.frame()
 ```
 
-## Depth quantiles (per match status) {style="font-size: 16px;"}
+### Depth quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -437,7 +439,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -462,7 +464,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth Boxplots {style="font-size: 16px;"}
+### Depth Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -535,7 +537,7 @@ suppressWarnings({
 })
 ```
 
-## Depth Histograms (per match status) {style="font-size: 16px;"}
+### Depth Histograms (per match status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -552,7 +554,7 @@ coriell::theme_coriell()
 p
 ```
 
-## Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -570,7 +572,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ stats {.center}
+### GQ stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$gq_stats, .id = "id") %>%
@@ -580,7 +582,7 @@ data <- bind_rows(stats$gq_stats, .id = "id") %>%
     data.frame()
 ```
 
-## GQ quantiles (per match status) {style="font-size: 16px;"}
+### GQ quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -604,7 +606,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ quantiles (per match/sample status) {style="font-size: 16px;"}
+### GQ quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -629,7 +631,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ Boxplots {style="font-size: 16px;"}
+### GQ Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -702,7 +704,7 @@ suppressWarnings({
 })
 ```
 
-## GQ Histograms (per match status)
+### GQ Histograms (per match status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -718,7 +720,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ Histograms (per match/sample status)
+### GQ Histograms (per match/sample status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -744,7 +746,7 @@ p
 stats <- readRDS(here("results/08/HG005/HG005_stats.rds"))
 ```
 
-## Depth stats {.center}
+### Depth stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$dp_stats, .id = "id") %>%
@@ -754,7 +756,7 @@ data <- bind_rows(stats$dp_stats, .id = "id") %>%
     data.frame()
 ```
 
-## Depth quantiles (per match status) {style="font-size: 16px;"}
+### Depth quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -778,7 +780,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -803,7 +805,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth Boxplots {style="font-size: 16px;"}
+### Depth Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -876,7 +878,7 @@ suppressWarnings({
 })
 ```
 
-## Depth Histograms (per match status) {style="font-size: 16px;"}
+### Depth Histograms (per match status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -893,7 +895,7 @@ coriell::theme_coriell()
 p
 ```
 
-## Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -911,7 +913,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ stats {.center}
+### GQ stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$gq_stats, .id = "id") %>%
@@ -921,7 +923,7 @@ data <- bind_rows(stats$gq_stats, .id = "id") %>%
     data.frame()
 ```
 
-## GQ quantiles (per match status) {style="font-size: 16px;"}
+### GQ quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -945,7 +947,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ quantiles (per match/sample status) {style="font-size: 16px;"}
+### GQ quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -970,7 +972,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ Boxplots {style="font-size: 16px;"}
+### GQ Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -1043,7 +1045,7 @@ suppressWarnings({
 })
 ```
 
-## GQ Histograms (per match status)
+### GQ Histograms (per match status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1059,7 +1061,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ Histograms (per match/sample status)
+### GQ Histograms (per match/sample status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1086,7 +1088,7 @@ p
 stats <- readRDS(here("results/08/Fibroblast/Fibroblast_stats.rds"))
 ```
 
-## Depth stats {.center}
+### Depth stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$dp_stats, .id = "id") %>%
@@ -1096,7 +1098,7 @@ data <- bind_rows(stats$dp_stats, .id = "id") %>%
     data.frame()
 ```
 
-## Depth quantiles (per match status) {style="font-size: 16px;"}
+### Depth quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -1120,7 +1122,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -1145,7 +1147,7 @@ gt(tbl) %>%
   )
 ```
 
-## Depth Boxplots {style="font-size: 16px;"}
+### Depth Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -1218,7 +1220,7 @@ suppressWarnings({
 })
 ```
 
-## Depth Histograms (per match status) {style="font-size: 16px;"}
+### Depth Histograms (per match status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1235,7 +1237,7 @@ coriell::theme_coriell()
 p
 ```
 
-## Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1253,7 +1255,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ stats {.center}
+### GQ stats {.center}
 
 ```{r, include = FALSE}
 data <- bind_rows(stats$gq_stats, .id = "id") %>%
@@ -1263,7 +1265,7 @@ data <- bind_rows(stats$gq_stats, .id = "id") %>%
     data.frame()
 ```
 
-## GQ quantiles (per match status) {style="font-size: 16px;"}
+### GQ quantiles (per match status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>% 
@@ -1287,7 +1289,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ quantiles (per match/sample status) {style="font-size: 16px;"}
+### GQ quantiles (per match/sample status) {style="font-size: 16px;"}
 
 ```{r}
 tbl <- data %>%
@@ -1312,7 +1314,7 @@ gt(tbl) %>%
   )
 ```
 
-## GQ Boxplots {style="font-size: 16px;"}
+### GQ Boxplots {style="font-size: 16px;"}
 
 ```{r, fig.width = 15, fig.height = 10}
 input <- data %>%
@@ -1385,7 +1387,7 @@ suppressWarnings({
 })
 ```
 
-## GQ Histograms (per match status)
+### GQ Histograms (per match status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1401,7 +1403,7 @@ coriell::theme_coriell()
 p
 ```
 
-## GQ Histograms (per match/sample status)
+### GQ Histograms (per match/sample status)
 
 ```{r, fig.height = 15, fig.width = 10}
 p <- ggplot(
@@ -1412,6 +1414,715 @@ p <- ggplot(
   )
 ) +
 stat_binline(scale = 1, binwidth = 1) +
+facet_wrap(~id) +
+coriell::theme_coriell()
+
+p
+```
+
+## PBSV Stats
+
+## Compare HG002: HM24385, HM26105, HM27730 {style="font-size: 16px;"}
+
+- HM24385: LCL
+- HM26105: iPSC from LCL
+- HM27730: iPSC from PBMC
+
+```{r, include = FALSE}
+stats <- readRDS(here("results/10/HG002/HG002_stats.rds"))
+```
+
+### Depth stats {.center}
+
+```{r, include = FALSE}
+data <- bind_rows(stats$dp_stats, .id = "id") %>%
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = c(-chr_range, -id), names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    data.frame()
+```
+
+### Depth quantiles (per match status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>% 
+  group_by(id) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  mutate("% total" = (n/sum(.$n) * 100) %>% round(., 2)) %>%
+  ungroup() %>%
+  select(id, n, `% total`, everything())
+  
+lastidx <- nrow(tbl)+1
+tbl[lastidx,"n"] <- sum(tbl$n)
+tbl[lastidx,"id"] <- "total"
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id, sample) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, sample, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  ungroup() %>%
+  group_by(sample) %>%
+  mutate("% sample" = sum(n)) %>%
+  group_by(id, sample) %>%
+  mutate("% sample" = (n/`% sample` * 100) %>% round(.,2)) %>%
+  ungroup() %>%
+  select(id, sample, n, `% sample`, everything())
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth Boxplots {style="font-size: 16px;"}
+
+```{r, fig.width = 15, fig.height = 10}
+input <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id) %>%
+  mutate(n_id = length(unique(chr_range))) %>%
+  ungroup() %>%
+  group_by(id, sample) %>%
+  mutate(
+    n_id_samp = length(unique(chr_range)),
+    Q75 = quantile(value, probs = 0.75),
+    Q25 = quantile(value, probs = 0.25)
+  ) %>%
+  mutate(Whiskup = 1.05*(Q75 + 1.5*(Q75-Q25)))
+
+input <- input %>% mutate(
+  id = paste0(id," (n = ",n_id,")")
+)
+
+# Reorder levels for ID
+id_levels <- c(
+  grep(unique(input$id), pattern = "one_", value = TRUE), 
+  grep(unique(input$id), pattern = "two_", value = TRUE),
+  grep(unique(input$id), pattern = "three_", value = TRUE)
+)
+
+input <- input %>% 
+  mutate(
+    id = factor(id, levels = id_levels)
+  )
+
+# Reorder levels for Sample
+sample_levels <- c(
+  grep(unique(input$sample), pattern = "max|min", value = TRUE, invert = TRUE),
+  "max",
+  "min"
+)
+
+input <- input %>% 
+  mutate(
+    sample = factor(sample, levels = sample_levels)
+  )
+
+# Create label data
+label_data <- input %>% 
+  select(id, sample, n_id_samp, Q25, Q75, Whiskup) %>%
+  distinct()
+
+label_data <- label_data[order(label_data$id, label_data$sample),]
+
+p <- ggplot(
+    input,
+    aes(
+        x = sample,
+        y = value
+    )
+) + 
+ylab("depth") +
+geom_boxplot(outliers = FALSE) +
+facet_wrap(~id)
+
+p <- p + 
+  geom_text(
+    data = label_data, aes(y = Whiskup, label = n_id_samp), position = position_dodge(width = .75)
+  ) +
+  coriell::theme_coriell()
+
+suppressWarnings({
+    print(p)
+})
+```
+
+### Depth Histograms (per match status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = id
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+coriell::theme_coriell()
+
+p
+```
+
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+facet_wrap(~id) +
+coriell::theme_coriell()
+
+p
+```
+
+## Compare HG004: HM24143, HM26077 {style="font-size: 16px;"}
+
+- HM24143: LCL
+- HM26077: iPSC from LCL
+
+```{r, include = FALSE}
+stats <- readRDS(here("results/10/HG004/HG004_stats.rds"))
+```
+
+### Depth stats {.center}
+
+```{r, include = FALSE}
+data <- bind_rows(stats$dp_stats, .id = "id") %>%
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = c(-chr_range, -id), names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    data.frame()
+```
+
+### Depth quantiles (per match status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>% 
+  group_by(id) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  mutate("% total" = (n/sum(.$n) * 100) %>% round(., 2)) %>%
+  ungroup() %>%
+  select(id, n, `% total`, everything())
+  
+lastidx <- nrow(tbl)+1
+tbl[lastidx,"n"] <- sum(tbl$n)
+tbl[lastidx,"id"] <- "total"
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id, sample) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, sample, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  ungroup() %>%
+  group_by(sample) %>%
+  mutate("% sample" = sum(n)) %>%
+  group_by(id, sample) %>%
+  mutate("% sample" = (n/`% sample` * 100) %>% round(.,2)) %>%
+  ungroup() %>%
+  select(id, sample, n, `% sample`, everything())
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth Boxplots {style="font-size: 16px;"}
+
+```{r, fig.width = 15, fig.height = 10}
+input <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id) %>%
+  mutate(n_id = length(unique(chr_range))) %>%
+  ungroup() %>%
+  group_by(id, sample) %>%
+  mutate(
+    n_id_samp = length(unique(chr_range)),
+    Q75 = quantile(value, probs = 0.75),
+    Q25 = quantile(value, probs = 0.25)
+  ) %>%
+  mutate(Whiskup = 1.05*(Q75 + 1.5*(Q75-Q25)))
+
+input <- input %>% mutate(
+  id = paste0(id," (n = ",n_id,")")
+)
+
+# Reorder levels for ID
+id_levels <- c(
+  grep(unique(input$id), pattern = "one_", value = TRUE), 
+  grep(unique(input$id), pattern = "two_", value = TRUE),
+  grep(unique(input$id), pattern = "three_", value = TRUE)
+)
+
+input <- input %>% 
+  mutate(
+    id = factor(id, levels = id_levels)
+  )
+
+# Reorder levels for Sample
+sample_levels <- c(
+  grep(unique(input$sample), pattern = "max|min", value = TRUE, invert = TRUE),
+  "max",
+  "min"
+)
+
+input <- input %>% 
+  mutate(
+    sample = factor(sample, levels = sample_levels)
+  )
+
+# Create label data
+label_data <- input %>% 
+  select(id, sample, n_id_samp, Q25, Q75, Whiskup) %>%
+  distinct()
+
+label_data <- label_data[order(label_data$id, label_data$sample),]
+
+p <- ggplot(
+    input,
+    aes(
+        x = sample,
+        y = value
+    )
+) + 
+ylab("depth") +
+geom_boxplot(outliers = FALSE) +
+facet_wrap(~id)
+
+p <- p + 
+  geom_text(
+    data = label_data, aes(y = Whiskup, label = n_id_samp), position = position_dodge(width = .75)
+  ) +
+  coriell::theme_coriell()
+
+suppressWarnings({
+    print(p)
+})
+```
+
+### Depth Histograms (per match status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = id
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+coriell::theme_coriell()
+
+p
+```
+
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+facet_wrap(~id) +
+coriell::theme_coriell()
+
+p
+```
+
+## Compare HG005: HM24631, HM26107 {style="font-size: 16px;"}
+
+- HM24631: LCL
+- HM26107: iPSC from LCL
+
+```{r, include = FALSE}
+stats <- readRDS(here("results/10/HG005/HG005_stats.rds"))
+```
+
+### Depth stats {.center}
+
+```{r, include = FALSE}
+data <- bind_rows(stats$dp_stats, .id = "id") %>%
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = c(-chr_range, -id), names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    data.frame()
+```
+
+### Depth quantiles (per match status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>% 
+  group_by(id) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  mutate("% total" = (n/sum(.$n) * 100) %>% round(., 2)) %>%
+  ungroup() %>%
+  select(id, n, `% total`, everything())
+  
+lastidx <- nrow(tbl)+1
+tbl[lastidx,"n"] <- sum(tbl$n)
+tbl[lastidx,"id"] <- "total"
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id, sample) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, sample, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  ungroup() %>%
+  group_by(sample) %>%
+  mutate("% sample" = sum(n)) %>%
+  group_by(id, sample) %>%
+  mutate("% sample" = (n/`% sample` * 100) %>% round(.,2)) %>%
+  ungroup() %>%
+  select(id, sample, n, `% sample`, everything())
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth Boxplots {style="font-size: 16px;"}
+
+```{r, fig.width = 15, fig.height = 10}
+input <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id) %>%
+  mutate(n_id = length(unique(chr_range))) %>%
+  ungroup() %>%
+  group_by(id, sample) %>%
+  mutate(
+    n_id_samp = length(unique(chr_range)),
+    Q75 = quantile(value, probs = 0.75),
+    Q25 = quantile(value, probs = 0.25)
+  ) %>%
+  mutate(Whiskup = 1.05*(Q75 + 1.5*(Q75-Q25)))
+
+input <- input %>% mutate(
+  id = paste0(id," (n = ",n_id,")")
+)
+
+# Reorder levels for ID
+id_levels <- c(
+  grep(unique(input$id), pattern = "one_", value = TRUE), 
+  grep(unique(input$id), pattern = "two_", value = TRUE),
+  grep(unique(input$id), pattern = "three_", value = TRUE)
+)
+
+input <- input %>% 
+  mutate(
+    id = factor(id, levels = id_levels)
+  )
+
+# Reorder levels for Sample
+sample_levels <- c(
+  grep(unique(input$sample), pattern = "max|min", value = TRUE, invert = TRUE),
+  "max",
+  "min"
+)
+
+input <- input %>% 
+  mutate(
+    sample = factor(sample, levels = sample_levels)
+  )
+
+# Create label data
+label_data <- input %>% 
+  select(id, sample, n_id_samp, Q25, Q75, Whiskup) %>%
+  distinct()
+
+label_data <- label_data[order(label_data$id, label_data$sample),]
+
+p <- ggplot(
+    input,
+    aes(
+        x = sample,
+        y = value
+    )
+) + 
+ylab("depth") +
+geom_boxplot(outliers = FALSE) +
+facet_wrap(~id)
+
+p <- p + 
+  geom_text(
+    data = label_data, aes(y = Whiskup, label = n_id_samp), position = position_dodge(width = .75)
+  ) +
+  coriell::theme_coriell()
+
+suppressWarnings({
+    print(p)
+})
+```
+
+### Depth Histograms (per match status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = id
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+coriell::theme_coriell()
+
+p
+```
+
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+facet_wrap(~id) +
+coriell::theme_coriell()
+
+p
+```
+
+
+## Compare Fibroblast: HM20431, HM23248_2, HM23338 {style="font-size: 16px;"}
+
+- HM20431: LCL from Fibroblast
+- HM23248_2: 
+- HM23338: iPSC from Fibroblast
+
+```{r, include = FALSE}
+stats <- readRDS(here("results/10/Fibroblast/Fibroblast_stats.rds"))
+```
+
+### Depth stats {.center}
+
+```{r, include = FALSE}
+data <- bind_rows(stats$dp_stats, .id = "id") %>%
+    as_tibble(rownames = "chr_range") %>%
+    pivot_longer(cols = c(-chr_range, -id), names_to = "sample", values_to = "value") %>%
+    mutate(value = as.numeric(value)) %>%
+    data.frame()
+```
+
+### Depth quantiles (per match status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>% 
+  group_by(id) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  mutate("% total" = (n/sum(.$n) * 100) %>% round(., 2)) %>%
+  ungroup() %>%
+  select(id, n, `% total`, everything())
+  
+lastidx <- nrow(tbl)+1
+tbl[lastidx,"n"] <- sum(tbl$n)
+tbl[lastidx,"id"] <- "total"
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth quantiles (per match/sample status) {style="font-size: 16px;"}
+
+```{r}
+tbl <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id, sample) %>%
+  mutate(n = length(unique(chr_range))) %>%
+  group_by(id, sample, n) %>%
+  group_modify(~as.data.frame(t(quantile(.$value, na.rm = TRUE)))) %>%
+  ungroup() %>%
+  group_by(sample) %>%
+  mutate("% sample" = sum(n)) %>%
+  group_by(id, sample) %>%
+  mutate("% sample" = (n/`% sample` * 100) %>% round(.,2)) %>%
+  ungroup() %>%
+  select(id, sample, n, `% sample`, everything())
+
+gt(tbl) %>%
+  sub_missing(
+    columns = everything(),
+    rows = everything(),
+    missing_text = "---"
+  )
+```
+
+### Depth Boxplots {style="font-size: 16px;"}
+
+```{r, fig.width = 15, fig.height = 10}
+input <- data %>%
+  filter(!is.na(value)) %>%
+  group_by(id) %>%
+  mutate(n_id = length(unique(chr_range))) %>%
+  ungroup() %>%
+  group_by(id, sample) %>%
+  mutate(
+    n_id_samp = length(unique(chr_range)),
+    Q75 = quantile(value, probs = 0.75),
+    Q25 = quantile(value, probs = 0.25)
+  ) %>%
+  mutate(Whiskup = 1.05*(Q75 + 1.5*(Q75-Q25)))
+
+input <- input %>% mutate(
+  id = paste0(id," (n = ",n_id,")")
+)
+
+# Reorder levels for ID
+id_levels <- c(
+  grep(unique(input$id), pattern = "one_", value = TRUE), 
+  grep(unique(input$id), pattern = "two_", value = TRUE),
+  grep(unique(input$id), pattern = "three_", value = TRUE)
+)
+
+input <- input %>% 
+  mutate(
+    id = factor(id, levels = id_levels)
+  )
+
+# Reorder levels for Sample
+sample_levels <- c(
+  grep(unique(input$sample), pattern = "max|min", value = TRUE, invert = TRUE),
+  "max",
+  "min"
+)
+
+input <- input %>% 
+  mutate(
+    sample = factor(sample, levels = sample_levels)
+  )
+
+# Create label data
+label_data <- input %>% 
+  select(id, sample, n_id_samp, Q25, Q75, Whiskup) %>%
+  distinct()
+
+label_data <- label_data[order(label_data$id, label_data$sample),]
+
+p <- ggplot(
+    input,
+    aes(
+        x = sample,
+        y = value
+    )
+) + 
+ylab("depth") +
+geom_boxplot(outliers = FALSE) +
+facet_wrap(~id)
+
+p <- p + 
+  geom_text(
+    data = label_data, aes(y = Whiskup, label = n_id_samp), position = position_dodge(width = .75)
+  ) +
+  coriell::theme_coriell()
+
+suppressWarnings({
+    print(p)
+})
+```
+
+### Depth Histograms (per match status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = id
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
+coriell::theme_coriell()
+
+p
+```
+
+### Depth Histograms (per match/sample status) {style="font-size: 16px;"}
+
+```{r, fig.height = 15, fig.width = 10}
+p <- ggplot(
+  input %>% filter(value <= 75),
+  aes(
+    x = value,
+    y = sample
+  )
+) +
+stat_binline(scale = 1, binwidth = 1) +
+xlab("depth") +
 facet_wrap(~id) +
 coriell::theme_coriell()
 
